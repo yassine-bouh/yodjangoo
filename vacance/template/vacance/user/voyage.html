@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/style3.css' %}">
+  <link rel="icon" type="images/gif" href="{% static 'images/avion.png' %}"> 
+  <title>YOT</title>
+</head>
+<body>
+  <!--header-->
+    <div class="header">
+      <div class="logo" >
+        <a href="{% url 'voyage' %}">
+        <img id='ico'  src="{% static 'images/avion.png' %}"></a>
+        YOTravel.com
+    </div>
+    <button id="res"><a href="{% url 'reservations' %}">mes reservations</a></button>
+
+        <h4 id="nom">{{ user.first_name }}</h4>
+        <img id="imgprof" src="{{ user.image_de_profil.url }}" alt="{{ user.first_name }}">
+
+    </div>
+    <form id="search-form" action="{% url 'voyage' %}" method="get">
+    <div class="search-container">
+      <input type="text" name="q1" class="search-input" placeholder="Destination">
+      <div class="date-inputs">
+        <div class="date-input-group">
+          <label for="check-in" class="date-label">Date de départ</label>
+          <input type="date" id="check-in" class="date-input" placeholder="Date de départ">
+        </div>
+        
+        <div class="date-input-group">
+          <label for="check-out" class="date-label">Date de retour </label>
+          <input type="date" id="check-out" class="date-input" placeholder="Date d'arrivée">
+        </div>
+      </div>
+      <input type="number" class="room-input" placeholder="Rooms">
+      <button type="submit" class="search-button">Recherche</button>
+    </div>
+    </form>
+     <!-- promotions -->
+     <H3 id="tit">Promotions</H3>
+     <div class="scrolling-container">
+      <div class="scrolling-content">
+        <img id=''  src="{% static 'images/avion.png' %}"></a>
+        <img id=''  src="{% static 'images/avion.png' %}"></a>
+        <img id=''  src="{% static 'images/avion.png' %}"></a>
+
+      </div>
+    </div>
+ <!-- Destinations -->
+ 
+ <H3 id="tit">Explorer nos offres </H3>
+
+    <div class="main-container">
+      {% if request.GET.q1 and not voyage_trouve %}
+      <p class="cl_NEx">
+          Aucun voyage  trouvé avec cette destination ...
+      </p>
+  {% endif %}
+  {% if not request.GET.q1 or not voyage_trouve %}
+  {% for voyage in voyages %}
+  <div class="travel-section">
+    <div class="destination-card">
+      <img src="{{ voyage.image_de_voyage.url }}" alt="image_de_voyage" >
+      <div class="details">
+      <h3 class="titre">{{ voyage.titre }}</h3>
+      <h4 class="price">{{ voyage.prix }} Dh</h4>
+      <p class="category">{{ voyage.get_categorie_display }} </p>
+      <p class="date">{{ voyage.date_debut }}  {{ voyage.date_fin }} </p>
+      <p class="description">{{ voyage.description }} </p>
+      </div></div>
+
+      </div>
+      {% endfor %}
+{% endif %}
+
+  {% if voyage_trouve %}
+  <div class="travel-section">
+    <div class="destination-card">
+      <img src="{{ voyage_trouve.image_de_voyage.url }}" alt="image_de_voyage" >
+      <div class="details">
+        <h3 class="titre">{{ voyage_trouve.titre }}</h3>
+        <h4 class="price">{{ voyage_trouve.prix }} Dh</h4>
+        <p class="category">{{ voyage_trouve.category }} </p>
+        <p class="date">{{ voyage_trouve.date_debut }}  {{ voyage_trouve.date_fin }} </p>
+        <p class="description">{{ voyage_trouve.description }} </p>
+        </div>
+    </div>
+      </div>
+
+{% endif%}
+      </div>
+      <div class="footer">
+        <div class="foot" >
+            <a href="{% url 'voyage' %}">
+            <img id='icof'  src="{% static 'images/avion.png' %}"></a>
+            YOTravel.com
+        </div>
+      </div>
+
+  </body>
+  </html>
