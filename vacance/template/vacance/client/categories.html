@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{% static 'css/style3.css' %}">
+  <link rel="stylesheet" href="{% static 'css/details.css' %}">
   <link rel="icon" type="images/gif" href="{% static 'images/avion.png' %}"> 
   <title>YOT</title>
   <style>
@@ -61,6 +61,17 @@
     .dropdown:hover .dropdown-content {
       display: block;
     }
+    .Nav{
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
+
+#ach,#fav{
+  height: 30px;
+  width: 30px;
+  
+}
+
     </style>
 </head>
 <body>
@@ -75,27 +86,15 @@
         <a href="{% url 'acceuil' %}"><button id="res">S'inscrire</button></a>
       </div>
     </div>
-    <form id="search-form" action="{% url 'home' %}" method="get">
-    <div class="search-container">
-      <input type="text" name="q1" class="search-input" placeholder="Destination">
-      <div class="date-inputs">
-        <div class="date-input-group">
-          <label for="check-in" class="date-label">Date de départ</label>
-          <input type="date" id="check-in" name="q3" class="date-input" placeholder="Date de départ">
-        </div>
-        
-        <div class="date-input-group">
-          <label for="check-out" class="date-label">Date de retour </label>
-          <input type="date" id="check-out" name="q4" class="date-input" placeholder="Date d'arrivée">
-        </div>
-      </div>
-      <input type="number" class="room-input" name="q2" placeholder="prix maximum">
-      <button type="submit" class="search-button">Recherche</button>
-    </div>
-    </form>
+
      <!-- promotions -->
      <div class="Nav">
       <ul>
+        <li class="dropdown">
+            <a href="#" class="dropbtn">reservations</a>
+          </li>        <li class="dropdown">
+            <a href="#" class="dropbtn">favoris</a>
+          </li>
         <li class="dropdown">
           <a href="javascript:void(0)" class="dropbtn">promotions</a>
           <div class="dropdown-content">
@@ -126,53 +125,26 @@
  <H3 id="tit">Explorer nos offres </H3>
 
     <div class="main-container">
-      {% if request.GET.q1 and not voyage_trouve %}
-      <p class="cl_NEx">
-          Aucun voyage trouvé ...
-      </p>
-  {% endif %}
-  
-  {% if not request.GET.q1 or not voyage_trouve %}
-      {% for voyage in voyages %}
-          <div class="travel-section">
-              <div class="destination-card"><a href="{% url 'details' voyage.id %}">
-                  <img src="{{ voyage.image_de_voyage.url }}" name='image'  alt="image_de_voyage"></a>
-                  <div id="icones"><a href="{% url 'Sec' %}">
-                    <img id='fav'  src="{% static 'images/coeur.png' %}" title="ajouter au favoris"  alt="ajouter au favoris"></a>
-                    <a href="{% url 'Sec' %}">
-                    <img id='ach'  src="{% static 'images/acheter.png' %}" title="reserver" alt="reserver"></a>
-                </div>
-                  <div class="details">
-                      <h3 class="titre">{{ voyage.titre }}</h3>
-                      <h4 class="price">{{ voyage.prix }} DH</h4>
-                      <p class="date"> {{ voyage.date_debut }}  {{ voyage.date_fin }} </p>
-                      <p class="description"> {{ voyage.get_categorie_display }} :{{ voyage.description }} </p>
-                  </div>
+        {% for voyage in voyages %}
+        <div class="travel-section">
+            <div class="destination-card">
+                <img src="{{ voyage.image_de_voyage.url }}" name='image' title="image_de_voyage"  alt="image_de_voyage">
+                <div id="icones"><a href="{% url 'home' %}">
+                  <img id='fav'  src="{% static 'images/coeur.png' %}" title="ajouter au favoris"  alt="ajouter au favoris"></a>
+                  <a href="{% url 'home' %}">
+                  <img id='ach'  src="{% static 'images/acheter.png' %}" title="reserver" alt="reserver"></a>
               </div>
-          </div>
-      {% endfor %}
-  {% endif %}
-  {% if  request.GET.q1 and  voyage_trouve %}
-        {% for voyage in voyage_trouve %}
-            <div class="travel-section">
-                <div class="destination-card"><a href="{% url 'details' voyage.id %}">
-                    <img src="{{ voyage.image_de_voyage.url }}"  name='image' value='voyage.id' alt="image_de_voyage"></a>
-                    <div id="icones"><a href="{% url 'home' %}">
-                      <img id='fav'  src="{% static 'images/coeur.png' %}" title="ajouter au favoris"  alt="ajouter au favoris"></a>
-                      <a href="{% url 'home' %}">
-                      <img id='ach'  src="{% static 'images/acheter.png' %}" title="reserver" alt="reserver"></a>
-                  </div>
-                    <div class="details">
-                        <h3 class="titre">{{ voyage.titre }}</h3>
-                        <h4 class="price">{{ voyage.get_categorie_display }}</h4>
-                        <p class="date">{{ voyage.date_debut }}  {{ voyage.date_fin }} </p>
-                        <p class="description">{{ voyage.description }} </p>
-                    </div>
-                </div>
+              <div class="details">
+                  
+                <h3 class="titre">{{ voyage.titre }}</h3>
+                <h4 class="price">{{ voyage.get_categorie_display }}</h4>
+                <p class="date">{{ voyage.date_debut }}  {{ voyage.date_fin }} </p>
+                <p class="description">{{ voyage.description }} </p>
             </div>
-        {% endfor %}
-        {% endif %}
+            </div>
+        </div> 
       </div>
+    {% endfor %}
       <div class="footer">
         <div class="foot" >
             <a href="{% url 'voyage' %}">

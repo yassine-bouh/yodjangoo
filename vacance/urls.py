@@ -23,12 +23,12 @@ urlpatterns = [
     # Utilisez le nom de la vue pour la modification de la promotion
     path('ModifierVoyage/<int:id>/', views.ModifierVoyage, name='ModifierVoyage'),
     #visitor paths
-        path('', views.home, name='home'),
-        path('details/<int:voyage_id>/', views.details, name='details'),
-        path('categories/<str:categorie_t>/', views.details, name='categories'),
+    path('', views.home, name='home'),
+    path('details/<int:voyage_id>/', views.details, name='details'),
+    path('categories/<str:categorie_t>/', views.categories, name='categories'),
     #user paths
-        path('voyage/', views.voyage, name='voyage'),
-        path('reservations/', views.reservations, name='reservations'),
-        path('detail/<int:voyage_id>/', views.detail, name='detail'),
+    path('voyage/', views.voyage, name='voyage'),
+    path('reservations/', views.reservations, name='reservations'),
+    path('detail/<int:voyage_id>/', views.detail, name='detail'),
 
 ]

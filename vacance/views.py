@@ -402,9 +402,13 @@ def categories(request, categorie_t):
     promos=Promotion.objects.all()
     categories=Voyage.categories
     cats = [nom[:] for code, nom in categories]
-    voyage = get_object_or_404(Voyage, categorie=categorie_t)
-    context = {'voyage': voyage,'promos':promos,'cats':cats}
-    return render(request, 'vacance/client/details.html', context)
+    voyages = Voyage.objects.filter(categorie=categorie_t)
+    context = {'voyages': voyages,'promos':promos,'cats':cats}
+    print('hljk')
+    for v in voyages:
+        print(v)
+        print('hljk')
+    return render(request, 'vacance/client/categories.html', context)
 from datetime import datetime
 
 def home(request):
