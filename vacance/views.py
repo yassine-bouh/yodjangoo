@@ -58,7 +58,7 @@ def modifier_statut_commande(request, commande_id):
         return redirect('dashCom')  
 def dashCom(request):
     commande_trouvee = None
-    dernieres_commandes = Commande.objects.all().order_by('-date_de_commande')[:3]
+    dernieres_commandes = Commande.objects.all().order_by('-date_de_commande')[:]
 
     if 'q1' in request.GET:
         search_query = request.GET['q1']
@@ -90,7 +90,7 @@ def modifier_statut_utilisateur(request, utilisateur_id):
     return redirect('dashuti')
 def dashProm(request):
     promotion_trouve = None
-    derniers_promotions = Promotion.objects.all().order_by('-id')[:3]
+    derniers_promotions = Promotion.objects.all().order_by('-id')[:]
 
     if 'q1' in request.GET:
         titre_recherche = request.GET['q1']
@@ -194,7 +194,7 @@ def admine(request):
     voy_count = Voyage.objects.count()
     comd_count = Commande.objects.count()
     current_user_first_name = request.user.username
-    dernieres_commandes = Commande.objects.all().order_by('-date_de_commande')[:3]
+    dernieres_commandes = Commande.objects.all().order_by('-date_de_commande')[:]
     #current_user_last_name = request.user.last_name
     context = { 'user_count':user_count,
                 'voy_count': voy_count,
@@ -203,15 +203,10 @@ def admine(request):
                 'dernieres_commandes': dernieres_commandes,}
                 #'current_user_last_name': current_user_last_name,}
     return render(request, 'vacance/admine.html',context)
-#def home(request):
-    # Votre logique de vue ici
-    #logout(request)
-    #return render(request, 'vacance/home.html')
-
 
 def dashuti(request):
     utilisateur_trouve = None
-    derniers_utilisateurs = User.objects.filter(statut='Client').order_by('-date_joined')[:3]
+    derniers_utilisateurs = User.objects.filter(statut='Client').order_by('-date_joined')[:]
 
     if 'q1' in request.GET:
         search_query = request.GET['q1']
@@ -227,10 +222,10 @@ def dashuti(request):
 
     context = {'utilisateurs': derniers_utilisateurs, 'utilisateur_trouve': utilisateur_trouve}
     return render(request, 'vacance/dashuti.html', context)
+
 def dashVoy(request):
     voyage_trouve = None
-    derniers_voyages = Voyage.objects.all().order_by('-id')[:3]
-
+    derniers_voyages = Voyage.objects.all().order_by('-id')[:]
     if 'q1' in request.GET:
         titre_recherche = request.GET['q1']
         if titre_recherche:
@@ -242,12 +237,15 @@ def dashVoy(request):
 
     context = {'voyages': derniers_voyages, 'voyage_trouve': voyage_trouve}
     return render(request, 'vacance/dashVoy.html', context)
+
 def Sec(request):
     # Votre logique de vue ici
     return render(request, 'vacance/seCon.html')
+
 def acceuil(request):
     # Votre logique de vue ici
     return render(request, 'vacance/acceuil.html')
+
 def GenrerListe():
     days = range(1, 32)
     months = [
@@ -349,8 +347,10 @@ def inscription(request):
                 statut="Client"
             )
             utilisateur.save()
-            print(utilisateur.id)
-            return HttpResponseRedirect(reverse('Sec'))
+            #return HttpResponseRedirect(reverse('voyage'))
+            user = authenticate(request, username=email, password=mot_de_passe)
+            if user is not None:
+                return HttpResponseRedirect(reverse('voyage'),user)
 
         except IntegrityError as e:
             print(f"IntegrityError: {e}")
@@ -389,12 +389,87 @@ def check_user(request):
     return render(request, 'vacance/seCon.html')
 
 
-####clients views 
+####clients viewer
+def details(request, voyage_id):
+    promos=Promotion.objects.all()
+    categories=Voyage.categories
+    cats = [nom[:] for code, nom in categories]
+    voyage = get_object_or_404(Voyage, id=voyage_id)
+    context = {'voyage': voyage,'promos':promos,'cats':cats}
+    return render(request, 'vacance/client/details.html', context)
+
+def categories(request, categorie_t):
+    promos=Promotion.objects.all()
+    categories=Voyage.categories
+    cats = [nom[:] for code, nom in categories]
+    voyage = get_object_or_404(Voyage, categorie=categorie_t)
+    context = {'voyage': voyage,'promos':promos,'cats':cats}
+    return render(request, 'vacance/client/details.html', context)
+from datetime import datetime
 
 def home(request):
+    dernieres_voyages = Voyage.objects.all().order_by('prix')
+    voyage_trouve = None
+    promos = Promotion.objects.all()
+    categories=Voyage.categories
+    cats = [nom[:] for code, nom in categories]
+
+    titre_recherche = request.GET.get('q1', '')
+    prix_recherche = request.GET.get('q2', '')
+    date_debut_recherche = request.GET.get('q3', '')
+    date_fin_recherche = request.GET.get('q4', '')
+
+    voyages_trouves = Voyage.objects.all()
+
+    if titre_recherche:
+        voyages_trouves = voyages_trouves.filter(titre__icontains=titre_recherche)
+
+    if prix_recherche:
+        try:
+            prix_recherche = float(prix_recherche)
+            voyages_trouves = voyages_trouves.filter(prix__lte=prix_recherche)
+        except ValueError:
+            pass
+
+    if date_debut_recherche:
+        try:
+            date_debut_recherche = datetime.strptime(date_debut_recherche, '%Y-%m-%d')
+            voyages_trouves = voyages_trouves.filter(date_debut__gte=date_debut_recherche)
+        except ValueError:
+            pass
+
+    if date_fin_recherche:
+        try:
+            date_fin_recherche = datetime.strptime(date_fin_recherche, '%Y-%m-%d')
+            voyages_trouves = voyages_trouves.filter(date_fin__lte=date_fin_recherche)
+        except ValueError:
+            pass
+
+    if voyages_trouves.exists():
+        voyage_trouve = voyages_trouves
+    else:
+        voyage_trouve = None
+
+    context = {
+        'voyages': dernieres_voyages,
+        'voyage_trouve': voyage_trouve,
+        'promos': promos,
+        'cats': cats,
+    }
+
+    return render(request, 'vacance/client/home.html', context)
+
+#####user
+def detail(request, voyage_id):
+    promos=Promotion.objects.all()
+    categories=Voyage.categories
+    cats = [nom[:] for code, nom in categories]
+    voyage = get_object_or_404(Voyage, id=voyage_id)
+    context = {'voyage': voyage,'promos':promos,'cats':cats}
+    return render(request, 'vacance/user/details.html', context)
+def voyage(request):
     voyage_trouve = None
     derniers_voyages = Voyage.objects.all().order_by('-id')[:]
-
     titre_recherche = request.GET.get('q1', '')
     prix_recherche = request.GET.get('q2', '')
 
@@ -415,26 +490,6 @@ def home(request):
         voyage_trouve = voyages_trouves
     else:
         voyage_trouve = None
-
-    context = {'voyages': derniers_voyages, 'voyage_trouve': voyage_trouve}
-    return render(request, 'vacance/client/home.html', context)
-
-def promotion(request):
-
-    return render(request, 'vacance/client/promotion.html')
-#####user
-def voyage(request):
-    voyage_trouve = None
-    derniers_voyages = Voyage.objects.all().order_by('-id')[:]
-
-    if 'q1' in request.GET:
-        titre_recherche = request.GET['q1']
-        if titre_recherche:
-            voyages_trouves = Voyage.objects.filter(titre__icontains=titre_recherche)
-            if voyages_trouves.exists():
-                voyage_trouve = voyages_trouves[0]
-            else:
-                voyage_trouve = None
 
     context = {'voyages': derniers_voyages, 'voyage_trouve': voyage_trouve}
     return render(request, 'vacance/user/voyage.html',context)

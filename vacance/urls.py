@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 urlpatterns = [
-    path('', views.acceuil, name='acceuil'),
+    path('acceuil', views.acceuil, name='acceuil'),
     path('adm/', views.adm, name='adm'),
     path('inscription/', views.inscription, name='inscription'),
     path('Sec/', views.Sec, name='Sec'),
@@ -23,9 +23,12 @@ urlpatterns = [
     # Utilisez le nom de la vue pour la modification de la promotion
     path('ModifierVoyage/<int:id>/', views.ModifierVoyage, name='ModifierVoyage'),
     #visitor paths
-        path('home/', views.home, name='home'),
-        path('promotion/', views.promotion, name='promotion'),
+        path('', views.home, name='home'),
+        path('details/<int:voyage_id>/', views.details, name='details'),
+        path('categories/<str:categorie_t>/', views.details, name='categories'),
     #user paths
         path('voyage/', views.voyage, name='voyage'),
-        path('reservations/', views.reservations, name='reservations')
+        path('reservations/', views.reservations, name='reservations'),
+        path('detail/<int:voyage_id>/', views.detail, name='detail'),
+
 ]
