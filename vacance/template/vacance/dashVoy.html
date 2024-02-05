@@ -144,7 +144,7 @@
         </a>
        </li>
        <li>
-        <a href="#">
+        <a href="{% url 'dashCom' %}">
           <i class="fas fa-clipboard-list"></i>
           <p> Commandes</p>
         </a>
@@ -162,7 +162,7 @@
         </a>
        </li>
        <li class="log-out">
-        <a href="#">
+        <a href="{% url 'deconnexion' %}">
           <i class="fas fa-sign-out"></i>
           <p> Log out</p>
         </a>
@@ -288,7 +288,7 @@
                         <td>{{ voyage.prix }}</td>
                         <td><img src="{{ voyage.image_de_voyage.url }}" alt="image_de_voyage" id="a"></td>
                         <td>
-                            <button  id="B">Modifier</button>
+                            <button onclick="modifierVoyage('{{ voyage.id }}')" id="B">Modifier</button>
                             <form method="post" action="{% url 'supprimer_voyage' voyage.id %}">
                                 {% csrf_token %}
                                 <button type="submit">Supprimer</button>
@@ -317,7 +317,7 @@
                     <td>{{ voyage_trouve.prix }}</td>
                     <td><img src="{{ voyage_trouve.image_de_voyage.url }}" alt="image_de_voyage" id="a"></td>
                     <td>
-                        <button  id="B">Modifier</button>
+                        <button onclick="modifierVoyage('{{ voyage_trouve.id }}')" id="B">Modifier</button>
                         <form method="post" action="{% url 'supprimer_voyage' voyage_trouve.id %}">
                             {% csrf_token %}
                             <button type="submit">Supprimer</button>
@@ -328,5 +328,11 @@
             </table>
         {% endif %}
     </div>
+    <script>
+       function modifierVoyage(voyageId) {
+        // Rediriger vers la page ModifierVoyage avec l'ID du voyage
+        window.location.href = "/ModifierVoyage/" + voyageId + "/";
+    }
+    </script>
     </body>
 </html>

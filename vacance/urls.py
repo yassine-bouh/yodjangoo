@@ -21,7 +21,7 @@ urlpatterns = [
     path('deconnexion/', views.deconnexion, name='deconnexion'),
     path('modifier_statut_commande/<int:commande_id>/', views.modifier_statut_commande, name='modifier_statut_commande'),
     # Utilisez le nom de la vue pour la modification de la promotion
-    
+    path('ModifierVoyage/<int:id>/', views.ModifierVoyage, name='ModifierVoyage'),
     #visitor paths
         path('home/', views.home, name='home'),
         path('promotion/', views.promotion, name='promotion'),
