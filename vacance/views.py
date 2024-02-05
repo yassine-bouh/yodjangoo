@@ -25,6 +25,27 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.views import View
 from django.views.decorators.http import require_POST
+def ModifierVoyage(request, id):
+    voyage = get_object_or_404(Voyage, id=id)
+
+    if request.method == 'POST':
+        voyage.titre = request.POST.get('titre', voyage.titre)
+        voyage.pays = request.POST.get('pays', voyage.pays)
+        voyage.ville = request.POST.get('ville', voyage.ville)
+        voyage.categorie = request.POST.get('categorie', voyage.categorie)
+        voyage.date_debut = request.POST.get('dateDebut', voyage.date_debut)
+        voyage.date_fin = request.POST.get('dateFin', voyage.date_fin)
+        voyage.prix = request.POST.get('prix', voyage.prix)
+        voyage.description = request.POST.get('description', voyage.description)
+
+        # Gérer le champ d'image si nécessaire
+        if 'image' in request.FILES:
+            voyage.image_de_voyage = request.FILES['image']
+
+        voyage.save()
+        return redirect('dashVoy')
+
+    return render(request, 'vacance/ModifierVoyage.html', {'voyage': voyage})
 def modifier_statut_commande(request, commande_id):
     if request.method == 'POST':
         nouveau_statut = request.POST.get('nouveau_statut')
@@ -54,7 +75,7 @@ def dashCom(request):
     return render(request, 'vacance/dashcom.html', context)
 def deconnexion(request):
     logout(request)
-    return redirect('Sec') 
+    return redirect('home') 
 def modifier_statut_utilisateur(request, utilisateur_id):
     print(utilisateur_id)
     if request.method == 'POST':
@@ -175,7 +196,8 @@ def admine(request):
     current_user_first_name = request.user.username
     dernieres_commandes = Commande.objects.all().order_by('-date_de_commande')[:3]
     #current_user_last_name = request.user.last_name
-    context = {'voy_count': voy_count,
+    context = { 'user_count':user_count,
+                'voy_count': voy_count,
                 'current_user_first_name': current_user_first_name,
                 'comd_count': comd_count,
                 'dernieres_commandes': dernieres_commandes,}
