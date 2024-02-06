@@ -58,7 +58,7 @@ class Commande(models.Model):
 	prix_total=models.FloatField()
 	statut = models.CharField(max_length=1, choices=status)
 	date_de_commande=models.DateField(null=True, blank=True)
-	recu = models.ImageField(upload_to='images/recus/', null=True, blank=True)
+	recu = models.ImageField(upload_to='static/images/recus/', null=True, blank=True)
 
 	#def __str__(self):
 		#return self.title

@@ -74,6 +74,61 @@
   width: 30px;
   
 }
+.container {
+  background-color: #fff;
+    width: 80%;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #0056b3;
+  text-decoration: underline;
+    text-align: center;
+}
+
+.form-group {
+  
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+#not{
+  color: #4a4a4a;
+  margin-top: -10px;
+}
 
     </style>
 </head>
@@ -157,10 +212,32 @@
                 <h5 >date de retour : {{ voyage.date_fin }}</h5> 
                 <p><h5>description:</h5>  {{ voyage.description }} </p>
             </div>
-        </div><div class="travel-section" id="reservation">
-
         </div>
-      </div>
+          <div id='reservation' class="container">
+            <h2>Effectuer votre reservation en ligne</h2>
+            <form action="{% url 'reserver' %}" method="post" enctype="multipart/form-data" >
+              {% csrf_token %}
+                <div class="form-group">
+                    <label for="nom">Nom :</label>
+                    <input type="text" id="nom" readonly value=" {{ user.last_name }} {{ user.first_name }}" name="nom" required>
+                </div>
+                <div class="form-group">
+                  <label for="email">Email :</label>
+                  <input type="email" id="email" readonly value="{{ user.username }}" name="email" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Voyage :</label>
+                <input type="email" id="email" readonly value="{{ voyage.id }}" name="idv" required>
+              </div> 
+                <div class="form-group">
+                    <label for="imag">Ajouter votre recu :</label>
+                    <input type="file" id="imag" name="imag" accept="image/*" required>
+                </div>
+                <p id ='not'>( effectuer le virement du mantant afficher vers ce RIB: FR7630001007941234567890185 et ajouter votre recu de paiment ce dessous .)</p>
+                <button type="submit">reserver maintenant</button>
+            </form>
+        </div>
+        </div>
 
        <a href="{% url 'deconnexion' %}"><button id="dec" >deconnecter</button> </a>
       <div class="footer">

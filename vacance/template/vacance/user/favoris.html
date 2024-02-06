@@ -134,9 +134,9 @@
                <div class="destination-card"><a href="{% url 'detail' voyage.id%}">
                    <img src="{{ voyage.image_de_voyage.url }}" name='image' title="image_de_voyage"  alt="image_de_voyage"></a>
                    <div id="icones">
-                     <a href="{% url 'detail' voyage.id%}">
-                     <img id='ach'  src="{% static 'images/acheter.png' %}" title="reserver" alt="reserver"></a>
-                 </div>
+                    <a href="{% url 'detail' voyage.id %}">
+                     <img id='fav'  src="{% static 'images/ajouter.png' %}" title="details"  alt="ajouter au favoris"></a>
+                   </div>
                  <div class="details">
                    <h3 class="titre">{{ voyage.titre }}</h3>
                    <h4 class="price">{{ voyage.get_categorie_display }}</h4>

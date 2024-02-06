@@ -33,6 +33,7 @@ urlpatterns = [
     path('categ/<str:categorie_t>/', views.categ, name='categ'),
     path('favo/<int:voy_id>/', views.favo, name='favo'),
     path('favoris/', views.favoris, name='favoris'),
+    path('reserver/', views.reserver, name='reserver'),
 
 
 ]

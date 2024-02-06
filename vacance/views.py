@@ -580,4 +580,37 @@ def reservations(request):
     cats = [nom[1] for  nom in categories]
     context = {'voyages': voyages, 'promos': promos, 'cats': cats}
     return render(request, 'vacance/user/reservations.html', context)
-    
+    ###reserver
+from datetime import date
+
+def reserver(request):
+
+    if request.method == 'POST' :
+        use = get_object_or_404(User, id=request.user.id)
+        v = request.POST.get('idv', '')
+        voy = get_object_or_404(Voyage, id=v)
+        dat = datetime.now()
+
+        rec = request.FILES.get('imag','')
+
+        if rec:
+            dat = datetime.now()
+            cm = Commande(
+                id_User=use,
+                id_Voyage=voy,
+                statut='W',
+                nbr_de_personnes=1,
+                date_de_commande=dat,
+                recu=rec,
+                prix_total=voy.prix
+            )
+            cm.save()
+                    
+            promos=Promotion.objects.all()
+            categories=Voyage.categories
+            cats = [nom[:] for code, nom in categories]
+            voyage = get_object_or_404(Voyage, id=voy.id)
+            context = {'voyage': voyage,'promos':promos,'cats':cats}
+            return render(request, 'vacance/user/details.html', context)
+        else:
+            return redirect('Sec')
