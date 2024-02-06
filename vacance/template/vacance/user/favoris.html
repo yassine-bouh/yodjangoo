@@ -127,9 +127,9 @@
        </div>
     <!-- Destinations -->
     <H3 id="tit">favoris </H3>
-     {% for voyage in voyages%}   
-       <div class="main-container">
+        {% for voyage in voyages%}
 
+       <div class="main-container">
            <div class="travel-section">
                <div class="destination-card"><a href="{% url 'detail' voyage.id%}">
                    <img src="{{ voyage.image_de_voyage.url }}" name='image' title="image_de_voyage"  alt="image_de_voyage"></a>

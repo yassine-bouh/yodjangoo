@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from urllib.parse import quote
 from django.contrib.auth.models import User
-from .models import User,Voyage,Commande
+from .models import User,Voyage,Commande,Favoris
 import phonenumbers
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.hashers import make_password
@@ -462,7 +462,7 @@ def home(request):
 
     return render(request, 'vacance/client/home.html', context)
 
-#####user
+########################user
 def detail(request, voyage_id):
     promos=Promotion.objects.all()
     categories=Voyage.categories
@@ -470,11 +470,63 @@ def detail(request, voyage_id):
     voyage = get_object_or_404(Voyage, id=voyage_id)
     context = {'voyage': voyage,'promos':promos,'cats':cats}
     return render(request, 'vacance/user/details.html', context)
+#ajouter au favoris
+def favo(request,voy_id):
+    
+    voyage = get_object_or_404(Voyage, id=voy_id)
+    use = get_object_or_404(User, id=request.user.id)
+    #### retirer le favoris
+    
+    ####
+
+    fa=Favoris(
+    id_User = use,
+    id_Voyage = voyage
+    )
+    fa.save()
+
+    promos=Promotion.objects.all()
+    categories=Voyage.categories
+    cats = [nom[:] for code, nom in categories]
+    voyage = get_object_or_404(Voyage, id=voy_id)
+    context = {'voyage': voyage,'promos':promos,'cats':cats}
+    return render(request, 'vacance/user/details.html', context)
+#page des favoris
+
+def favoris(request):
+    promos = Promotion.objects.all()
+    categories = Voyage.categories
+    favoriss = Favoris.objects.filter(id_User=request.user.id)
+    voyages=[]
+    for f in favoriss:
+        voyage = get_object_or_404(Voyage, id=f.id_Voyage.id)
+        voyages.append(voyage)
+        print('tettt')
+    cats = [nom[1] for  nom in categories]
+    context = {'voyages': voyages, 'promos': promos, 'cats': cats}
+    return render(request, 'vacance/user/favoris.html', context)
+    
+    
+def categ(request, categorie_t):
+    cate=categorie_t[0]
+    promos = Promotion.objects.all()
+    categories = Voyage.categories
+    cats = [nom[1] for  nom in categories]
+    voyages = Voyage.objects.filter(categorie=cate)
+    context = {'voyages': voyages, 'promos': promos, 'cats': cats}
+    return render(request, 'vacance/user/categories.html', context)
 def voyage(request):
+    dernieres_voyages = Voyage.objects.all().order_by('prix')
     voyage_trouve = None
-    derniers_voyages = Voyage.objects.all().order_by('-id')[:]
+    promos = Promotion.objects.all()
+    categories=Voyage.categories
+    
+    cats = [nom[1] for  nom in categories]
+
     titre_recherche = request.GET.get('q1', '')
     prix_recherche = request.GET.get('q2', '')
+    date_debut_recherche = request.GET.get('q3', '')
+    date_fin_recherche = request.GET.get('q4', '')
 
     voyages_trouves = Voyage.objects.all()
 
@@ -486,7 +538,20 @@ def voyage(request):
             prix_recherche = float(prix_recherche)
             voyages_trouves = voyages_trouves.filter(prix__lte=prix_recherche)
         except ValueError:
-            # Gérer le cas où le prix_recherche n'est pas un nombre valide
+            pass
+
+    if date_debut_recherche:
+        try:
+            date_debut_recherche = datetime.strptime(date_debut_recherche, '%Y-%m-%d')
+            voyages_trouves = voyages_trouves.filter(date_debut__gte=date_debut_recherche)
+        except ValueError:
+            pass
+
+    if date_fin_recherche:
+        try:
+            date_fin_recherche = datetime.strptime(date_fin_recherche, '%Y-%m-%d')
+            voyages_trouves = voyages_trouves.filter(date_fin__lte=date_fin_recherche)
+        except ValueError:
             pass
 
     if voyages_trouves.exists():
@@ -494,20 +559,25 @@ def voyage(request):
     else:
         voyage_trouve = None
 
-    context = {'voyages': derniers_voyages, 'voyage_trouve': voyage_trouve}
-    return render(request, 'vacance/user/voyage.html',context)
+    context = {
+        'voyages': dernieres_voyages,
+        'voyage_trouve': voyage_trouve,
+        'promos': promos,
+        'cats': cats,
+    }
+
+    return render(request, 'vacance/user/voyage.html', context)
+
 def reservations(request):
-    voyage_trouve = None
-    derniers_voyages = Voyage.objects.all().order_by('-id')[:]
-
-    if 'q1' in request.GET:
-        titre_recherche = request.GET['q1']
-        if titre_recherche:
-            voyages_trouves = Voyage.objects.filter(titre__icontains=titre_recherche)
-            if voyages_trouves.exists():
-                voyage_trouve = voyages_trouves[0]
-            else:
-                voyage_trouve = None
-
-    context = {'voyages': derniers_voyages, 'voyage_trouve': voyage_trouve}
-    return render(request, 'vacance/user/reservations.html',context)
+    promos = Promotion.objects.all()
+    categories = Voyage.categories
+    favoriss = Favoris.objects.filter(id_User=request.user.id)
+    voyages=[]
+    for f in favoriss:
+        voyage = get_object_or_404(Voyage, id=f.id_Voyage.id)
+        voyages.append(voyage)
+        print('tettt')
+    cats = [nom[1] for  nom in categories]
+    context = {'voyages': voyages, 'promos': promos, 'cats': cats}
+    return render(request, 'vacance/user/reservations.html', context)
+    

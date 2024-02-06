@@ -102,7 +102,7 @@
           <a href="javascript:void(0)" class="dropbtn">categories</a>
           <div class="dropdown-content">
             {% for cat in cats %}
-            <a href="#">{{ cat }}</a>
+            <a href="{% url 'categories' cat %}">{{ cat }}</a>
             {% endfor %}
           </div>
         </li>

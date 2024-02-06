@@ -30,5 +30,9 @@ urlpatterns = [
     path('voyage/', views.voyage, name='voyage'),
     path('reservations/', views.reservations, name='reservations'),
     path('detail/<int:voyage_id>/', views.detail, name='detail'),
+    path('categ/<str:categorie_t>/', views.categ, name='categ'),
+    path('favo/<int:voy_id>/', views.favo, name='favo'),
+    path('favoris/', views.favoris, name='favoris'),
+
 
 ]

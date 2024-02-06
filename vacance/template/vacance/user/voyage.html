@@ -8,7 +8,10 @@
   <link rel="icon" type="images/gif" href="{% static 'images/avion.png' %}"> 
   <title>YOT</title>
   <style>
-    
+   #dec{
+    background-color: rgba(49, 56, 89, 0.825);
+    margin-bottom: 3px;
+   } 
     ul {
       list-style-type: none;
       margin: 0;
@@ -76,6 +79,7 @@
         <img id="imgprof" src="{{ user.image_de_profil.url }}" alt="{{ user.first_name }}">
 
     </div>
+    <!--hearch bar-->
     <form id="search-form" action="{% url 'voyage' %}" method="get">
     <div class="search-container">
       <input type="text" name="q1" class="search-input" placeholder="Destination">
@@ -95,19 +99,19 @@
     </div>
     </form>
 
-    <!--promotion-->
+    <!--nav bar-->
     <div class="Nav">
       <ul>
         <li class="dropdown">
-            <a href="#" class="dropbtn">reservations</a>
+            <a href="{% url 'reservations' %}" class="dropbtn">reservations</a>
           </li>        <li class="dropdown">
-            <a href="#" class="dropbtn">favoris</a>
+            <a href="{% url 'favoris' %}" class="dropbtn">favoris</a>
           </li>
         <li class="dropdown">
           <a href="javascript:void(0)" class="dropbtn">promotions</a>
           <div class="dropdown-content">
             {% for prom in promos %}
-            <a href="{% url 'details' prom.id_Voyage.id %}">{{ prom.pourcentage }}% {{prom}}</a>
+            <a href="{% url 'detail' prom.id_Voyage.id %}">{{ prom.pourcentage }}% {{prom}}</a>
             {% endfor %}
           </div>
         </li>
@@ -115,12 +119,13 @@
           <a href="javascript:void(0)" class="dropbtn">categories</a>
           <div class="dropdown-content">
             {% for cat in cats %}
-            <a href="#">{{ cat }}</a>
+            <a href="{% url 'categ' cat %}">{{ cat }}</a>
             {% endfor %}
           </div>
         </li>
       </ul>
     </div>
+    <!--scroll-->
      <div class="scrolling-container">
       <div class="scrolling-content">
         <img id=''  src="{% static 'images/avion.png' %}"></a>
@@ -144,11 +149,10 @@
        <div class="travel-section">
            <div class="destination-card"><a href="{% url 'detail' voyage.id %}">
                <img src="{{ voyage.image_de_voyage.url }}" name='image'  alt="image_de_voyage"></a>
-               <div id="icones"><a href="{% url 'Sec' %}">
-                 <img id='fav'  src="{% static 'images/coeur.png' %}" title="ajouter au favoris"  alt="ajouter au favoris"></a>
-                 <a href="{% url 'Sec' %}">
-                 <img id='ach'  src="{% static 'images/acheter.png' %}" title="reserver" alt="reserver"></a>
-             </div>
+               <div id="icones">
+                <a href="{% url 'detail' voyage.id %}">
+                 <img id='fav'  src="{% static 'images/ajouter.png' %}" title="details"  alt="ajouter au favoris"></a>
+               </div>
                <div class="details">
                    <h3 class="titre">{{ voyage.titre }}</h3>
                    <h4 class="price">{{ voyage.prix }} DH</h4>
@@ -162,13 +166,12 @@
 {% if  request.GET.q1 and  voyage_trouve %}
      {% for voyage in voyage_trouve %}
          <div class="travel-section">
-             <div class="destination-card"><a href="{% url 'detail' voyage.id %}">
+             <div class="destination-card"><a href="{% url 'fav' voyage.id %}">
                  <img src="{{ voyage.image_de_voyage.url }}"  name='image' value='voyage.id' alt="image_de_voyage"></a>
-                 <div id="icones"><a href="{% url 'home' %}">
-                   <img id='fav'  src="{% static 'images/coeur.png' %}" title="ajouter au favoris"  alt="ajouter au favoris"></a>
-                   <a href="{% url 'home' %}">
-                   <img id='ach'  src="{% static 'images/acheter.png' %}" title="reserver" alt="reserver"></a>
-               </div>
+                 <div id="icones">
+                  <a href="{% url 'detail' voyage.id %}">
+                   <img id='fav'  src="{% static 'images/ajouter.png' %}" title="details"  alt="ajouter au favoris"></a>
+                 </div>
                  <div class="details">
                      <h3 class="titre">{{ voyage.titre }}</h3>
                      <h4 class="price">{{ voyage.get_categorie_display }}</h4>
@@ -180,12 +183,17 @@
      {% endfor %}
      {% endif %}
    </div>
+
+   <a href="{% url 'deconnexion' %}"><button id="dec" >deconnecter</button> </a>
    <div class="footer">
+
      <div class="foot" >
+      
          <a href="{% url 'voyage' %}">
          <img id='icof'  src="{% static 'images/avion.png' %}"></a>
          YOTravel.com
      </div>
+
    </div>
 </body>
 </html>

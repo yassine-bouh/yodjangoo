@@ -8,7 +8,10 @@
   <link rel="icon" type="images/gif" href="{% static 'images/avion.png' %}"> 
   <title>YOT</title>
   <style>
-    
+          #dec{
+        background-color: rgba(49, 56, 89, 0.825);
+        margin-bottom: 3px;
+       } 
     ul {
       list-style-type: none;
       margin: 0;
@@ -76,16 +79,17 @@
 </head>
 <body>
   <!--header-->
-    <div class="header">
-      <div class="logo" >
-        <a href="{% url 'home' %}">
-        <img id='ico'  src="{% static 'images/avion.png' %}"></a>
-        YOTravel.com</div>
-      <div class="auth-buttons">
-        <a href="{% url 'Sec' %}"><button id="res">Se connecter</button></a>
-        <a href="{% url 'acceuil' %}"><button id="res">S'inscrire</button></a>
-      </div>
-    </div>
+  <div class="header">
+    <div class="logo" >
+      <a href="{% url 'voyage' %}">
+      <img id='ico'  src="{% static 'images/avion.png' %}"></a>
+      YOTravel.com
+  </div>
+      <h4 id="nom">{{ user.first_name }}</h4>
+      <img id="imgprof" src="{{ user.image_de_profil.url }}" alt="{{ user.first_name }}">
+
+  </div>
+
 
      <!-- promotions -->
      <div class="Nav">
@@ -93,13 +97,13 @@
         <li class="dropdown">
             <a href="#" class="dropbtn">reservations</a>
           </li>        <li class="dropdown">
-            <a href="#" class="dropbtn">favoris</a>
+            <a href="{% url 'favoris' %}" class="dropbtn">favoris</a>
           </li>
         <li class="dropdown">
           <a href="javascript:void(0)" class="dropbtn">promotions</a>
           <div class="dropdown-content">
             {% for prom in promos %}
-            <a href="{% url 'details' prom.id_Voyage.id %}">{{ prom.pourcentage }}% {{prom}}</a>
+            <a href="{% url 'detail' prom.id_Voyage.id %}">{{ prom.pourcentage }}% {{prom}}</a>
             {% endfor %}
           </div>
         </li>
@@ -107,7 +111,7 @@
           <a href="javascript:void(0)" class="dropbtn">categories</a>
           <div class="dropdown-content">
             {% for cat in cats %}
-            <a href="#">{{ cat }}</a>
+            <a href="{% url 'categ' cat %}">{{ cat }}</a>
             {% endfor %}
           </div>
         </li>
@@ -122,16 +126,17 @@
       </div>
     </div>
  <!-- Destinations -->
- <H3 id="tit">Explorer nos offres </H3>
+ <H3 id="tit">details </H3>
 
     <div class="main-container">
   
         <div class="travel-section">
             <div class="destination-card">
                 <img src="{{ voyage.image_de_voyage.url }}" name='image' title="image_de_voyage"  alt="image_de_voyage">
-                <div id="icones"><a href="{% url 'home' %}">
+                <div id="icones">
+                  <a href="{% url 'favo' voyage.id %}">
                   <img id='fav'  src="{% static 'images/coeur.png' %}" title="ajouter au favoris"  alt="ajouter au favoris"></a>
-                  <a href="{% url 'home' %}">
+                  <a href="#reservation">
                   <img id='ach'  src="{% static 'images/acheter.png' %}" title="reserver" alt="reserver"></a>
               </div>
               <div class="details">
@@ -152,11 +157,12 @@
                 <h5 >date de retour : {{ voyage.date_fin }}</h5> 
                 <p><h5>description:</h5>  {{ voyage.description }} </p>
             </div>
-        </div><div class="travel-section">
+        </div><div class="travel-section" id="reservation">
 
         </div>
-
       </div>
+
+       <a href="{% url 'deconnexion' %}"><button id="dec" >deconnecter</button> </a>
       <div class="footer">
         <div class="foot" >
             <a href="{% url 'voyage' %}">
