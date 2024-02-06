@@ -91,11 +91,6 @@
      <div class="Nav">
       <ul>
         <li class="dropdown">
-            <a href="#" class="dropbtn">reservations</a>
-          </li>        <li class="dropdown">
-            <a href="#" class="dropbtn">favoris</a>
-          </li>
-        <li class="dropdown">
           <a href="javascript:void(0)" class="dropbtn">promotions</a>
           <div class="dropdown-content">
             {% for prom in promos %}
@@ -107,7 +102,7 @@
           <a href="javascript:void(0)" class="dropbtn">categories</a>
           <div class="dropdown-content">
             {% for cat in cats %}
-            <a href="#">{{ cat }}</a>
+            <a href="{% url 'categories' cat %}">{{ cat }}</a>
             {% endfor %}
           </div>
         </li>
@@ -129,14 +124,13 @@
         <div class="travel-section">
             <div class="destination-card">
                 <img src="{{ voyage.image_de_voyage.url }}" name='image' title="image_de_voyage"  alt="image_de_voyage">
-                <div id="icones"><a href="{% url 'home' %}">
+                <div id="icones"><a href="{% url 'Sec' %}">
                   <img id='fav'  src="{% static 'images/coeur.png' %}" title="ajouter au favoris"  alt="ajouter au favoris"></a>
-                  <a href="{% url 'home' %}">
+                  <a href="{% url 'Sec' %}">
                   <img id='ach'  src="{% static 'images/acheter.png' %}" title="reserver" alt="reserver"></a>
               </div>
               <div class="details">
-                  
-                <h3 class="titre">{{ voyage.titre }}</h3>
+                  <h3 class="titre">{{ voyage.titre }}</h3>
                 <h4 class="price">{{ voyage.get_categorie_display }}</h4>
                 <p class="date">{{ voyage.date_debut }}  {{ voyage.date_fin }} </p>
                 <p class="description">{{ voyage.description }} </p>

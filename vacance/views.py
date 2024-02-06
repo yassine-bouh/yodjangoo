@@ -399,16 +399,14 @@ def details(request, voyage_id):
     return render(request, 'vacance/client/details.html', context)
 
 def categories(request, categorie_t):
-    promos=Promotion.objects.all()
-    categories=Voyage.categories
-    cats = [nom[:] for code, nom in categories]
-    voyages = Voyage.objects.filter(categorie=categorie_t)
-    context = {'voyages': voyages,'promos':promos,'cats':cats}
-    print('hljk')
-    for v in voyages:
-        print(v)
-        print('hljk')
+    cate=categorie_t[0]
+    promos = Promotion.objects.all()
+    categories = Voyage.categories
+    cats = [nom[1] for  nom in categories]
+    voyages = Voyage.objects.filter(categorie=cate)
+    context = {'voyages': voyages, 'promos': promos, 'cats': cats}
     return render(request, 'vacance/client/categories.html', context)
+
 from datetime import datetime
 
 def home(request):
@@ -416,7 +414,8 @@ def home(request):
     voyage_trouve = None
     promos = Promotion.objects.all()
     categories=Voyage.categories
-    cats = [nom[:] for code, nom in categories]
+    
+    cats = [nom[1] for  nom in categories]
 
     titre_recherche = request.GET.get('q1', '')
     prix_recherche = request.GET.get('q2', '')
