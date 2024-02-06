@@ -4,7 +4,8 @@
     <head>
      <link rel="stylesheet" href="{% static 'css/dashu.css' %}">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-     <title> Dashbord | Voyage</title>
+     <link rel="icon" type="images/gif" href="{% static 'images/avion.png' %}"> 
+     <title>YOT</title>
      <style>
         #search-form {
             display: flex;
@@ -70,11 +71,13 @@
         color:#FFF;
         background-color: red;
         border: red solid;
+        border-radius: 5px;
     }
     #B{
       color:#FFF;
       background-color: green;
       border: green solid;
+      border-radius: 5px;
     }
     #formulaireVoyage {
             display: none;
@@ -83,12 +86,13 @@
        color: Black;
     }
     #affFo{
-        color:#000;
-        background-color: aqua;
-        border: aqua solid;
+        color:#FFF;
+        background-color: #123;
+        border: #123 solid;
     }
     #sub{
         background-color: green;
+        border-radius: 5px;
     }
     #formulaireTable {
             width: 50%;
@@ -125,12 +129,12 @@
       
     <div class="menu">
      <ul>
-       <li class="profile"> 
-        <div class="img-box">
-        <!--img src="imges/user-200x300.webp"-->
-        </div>
-        <h2> YO TRAVEL  </h2>
-       </li>
+        <li class="profile"> 
+            <div class="img-box">
+              <img id='ico'  src="{% static 'images/avion.png' %}"></a>
+                    </div>
+            <h2> YO TRAVEL  </h2>
+           </li>
        <li>
         <a href="{% url 'admine' %}" >
           <i class="fas fa-home"></i>
@@ -238,10 +242,13 @@
                         <th><label for="image">Image :</label></th>
                         <td><input type="file" id="image" name="image" accept="image/*" required></td>
                     </tr>
+                    <tr>
+                        <th colspan="2"><input type="submit" value="Ajouter" id="sub">
+                        <button type="button" onclick="annulerFormulaire()">Annuler</button></th>
+                    </tr>
                 </table>
         
-                <input type="submit" value="Ajouter" id="sub">
-                <button type="button" onclick="annulerFormulaire()">Annuler</button>
+                
             </form>
             <br><br>
         </div>
@@ -288,10 +295,11 @@
                         <td>{{ voyage.prix }}</td>
                         <td><img src="{{ voyage.image_de_voyage.url }}" alt="image_de_voyage" id="a"></td>
                         <td>
-                            <button onclick="modifierVoyage('{{ voyage.id }}')" id="B">Modifier</button>
+                            <button onclick="modifierVoyage('{{ voyage.id }}')" id="B">Modifier <i class="fas fa-edit"></i></button>
+                            <br><br>
                             <form method="post" action="{% url 'supprimer_voyage' voyage.id %}">
                                 {% csrf_token %}
-                                <button type="submit">Supprimer</button>
+                                <button type="submit" >Supprimer<i class="fas fa-trash"></i></button>
                             </form>
                             
                         </td>
@@ -317,10 +325,11 @@
                     <td>{{ voyage_trouve.prix }}</td>
                     <td><img src="{{ voyage_trouve.image_de_voyage.url }}" alt="image_de_voyage" id="a"></td>
                     <td>
-                        <button onclick="modifierVoyage('{{ voyage_trouve.id }}')" id="B">Modifier</button>
+                        <button onclick="modifierVoyage('{{ voyage_trouve.id }}')" id="B">Modifier<i class="fas fa-edit"></i></button>
+                        <br><br>
                         <form method="post" action="{% url 'supprimer_voyage' voyage_trouve.id %}">
                             {% csrf_token %}
-                            <button type="submit">Supprimer</button>
+                            <button type="submit">Supprimer<i class="fas fa-trash"></i></button>
                             
                         </form>
                     </td>

@@ -25,6 +25,30 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.views import View
 from django.views.decorators.http import require_POST
+# views.py
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Promotion, Voyage
+
+def Modifierpromo(request, id):
+    promotion = get_object_or_404(Promotion, id=id)
+    voyages = Voyage.objects.all()
+
+    if request.method == 'POST':
+        titre_voyage = request.POST.get('idVoyagePromotion', promotion.id_Voyage)
+        
+        # Récupérez l'instance de Voyage correspondant au titre
+        voyage_instance = get_object_or_404(Voyage, titre=titre_voyage)
+
+        promotion.titre = request.POST.get('titrePromotion', promotion.titre)
+        promotion.id_Voyage = voyage_instance
+        promotion.pourcentage = request.POST.get('pourcentagePromotion', promotion.pourcentage)
+
+        # Gérer d'autres champs si nécessaire
+
+        promotion.save()
+        return redirect('dashProm')  # Rediriger vers la page souhaitée après la modification de la promotion
+
+    return render(request, 'vacance/ModifierPromo.html', {'promotion': promotion, 'voyages': voyages})
 def ModifierVoyage(request, id):
     voyage = get_object_or_404(Voyage, id=id)
 
@@ -193,6 +217,11 @@ def admine(request):
     user_count = User.objects.count()
     voy_count = Voyage.objects.count()
     comd_count = Commande.objects.count()
+    cmd=Commande.objects.all()
+    revenu=0
+    for i in cmd :
+        revenu+=i.prix_total
+    revenu=int(revenu)
     current_user_first_name = request.user.username
     dernieres_commandes = Commande.objects.all().order_by('-date_de_commande')[:3]
     #current_user_last_name = request.user.last_name
@@ -200,7 +229,8 @@ def admine(request):
                 'voy_count': voy_count,
                 'current_user_first_name': current_user_first_name,
                 'comd_count': comd_count,
-                'dernieres_commandes': dernieres_commandes,}
+                'dernieres_commandes': dernieres_commandes,
+                'revenu':revenu,}
                 #'current_user_last_name': current_user_last_name,}
     return render(request, 'vacance/admine.html',context)
 #def home(request):
@@ -211,7 +241,7 @@ def admine(request):
 
 def dashuti(request):
     utilisateur_trouve = None
-    derniers_utilisateurs = User.objects.filter(statut='Client').order_by('-date_joined')[:3]
+    derniers_utilisateurs = User.objects.filter(statut='Client').order_by('-date_joined')[:]
 
     if 'q1' in request.GET:
         search_query = request.GET['q1']
@@ -229,7 +259,7 @@ def dashuti(request):
     return render(request, 'vacance/dashuti.html', context)
 def dashVoy(request):
     voyage_trouve = None
-    derniers_voyages = Voyage.objects.all().order_by('-id')[:3]
+    derniers_voyages = Voyage.objects.all().order_by('-id')[:]
 
     if 'q1' in request.GET:
         titre_recherche = request.GET['q1']
