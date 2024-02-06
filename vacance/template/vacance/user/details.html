@@ -140,8 +140,8 @@ button:hover {
       <img id='ico'  src="{% static 'images/avion.png' %}"></a>
       YOTravel.com
   </div>
-      <h4 id="nom">{{ user.first_name }}</h4>
-      <img id="imgprof" src="{{ user.image_de_profil.url }}" alt="{{ user.first_name }}">
+      <h4 id="nom">{{ user.first_name }}</h4><a href="{% url 'profile' %}">
+      <img id="imgprof" src="{{ user.image_de_profil.url }}" alt="{{ user.first_name }}"></a>
 
   </div>
 
@@ -158,7 +158,7 @@ button:hover {
           <a href="javascript:void(0)" class="dropbtn">promotions</a>
           <div class="dropdown-content">
             {% for prom in promos %}
-            <a href="{% url 'detail' prom.id_Voyage.id %}">{{ prom.pourcentage }}% {{prom}}</a>
+            <a href="{% url 'detailp' prom.id_Voyage.id %}">{{ prom.pourcentage }}% {{prom}}</a>
             {% endfor %}
           </div>
         </li>
@@ -197,7 +197,7 @@ button:hover {
               <div class="details">
                   
                 <h3 class="titre">{{ voyage.titre }}</h3>
-                <h4 class="price">{{ voyage.get_categorie_display }}</h4>
+                <h4 class="price">{{ voyage.prix }}</h4>
                 <p class="date">{{ voyage.date_debut }}  {{ voyage.date_fin }} </p>
                 <p class="description">{{ voyage.description }} </p>
             </div>

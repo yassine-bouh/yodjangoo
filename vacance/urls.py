@@ -26,11 +26,13 @@ urlpatterns = [
     #visitor paths
     path('', views.home, name='home'),
     path('details/<int:voyage_id>/', views.details, name='details'),
+    path('detailsp/<int:voyage_id>/', views.detailsp, name='detailsp'),
     path('categories/<str:categorie_t>/', views.categories, name='categories'),
     #user paths
     path('voyage/', views.voyage, name='voyage'),
     path('reservations/', views.reservations, name='reservations'),
     path('detail/<int:voyage_id>/', views.detail, name='detail'),
+    path('detailp/<int:voyage_id>/', views.detailp, name='detailp'),
     path('categ/<str:categorie_t>/', views.categ, name='categ'),
     path('favo/<int:voy_id>/', views.favo, name='favo'),
     path('favoris/', views.favoris, name='favoris'),

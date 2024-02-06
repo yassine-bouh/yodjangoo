@@ -94,7 +94,7 @@
           <a href="javascript:void(0)" class="dropbtn">promotions</a>
           <div class="dropdown-content">
             {% for prom in promos %}
-            <a href="{% url 'details' prom.id_Voyage.id %}">{{ prom.pourcentage }}% {{prom}}</a>
+            <a href="{% url 'detailsp' prom.id_Voyage.id %}">{{ prom.pourcentage }}% {{prom}}</a>
             {% endfor %}
           </div>
         </li>
@@ -131,7 +131,7 @@
               </div>
               <div class="details">
                 <h3 class="titre">{{ voyage.titre }}</h3>
-                <h4 class="price">{{ voyage.get_categorie_display }}</h4>
+                <h4 class="price">{{ voyage.prix }}</h4>
                 <p class="date">{{ voyage.date_debut }}  {{ voyage.date_fin }} </p>
                 <p class="description">{{ voyage.description }} </p>
             </div>

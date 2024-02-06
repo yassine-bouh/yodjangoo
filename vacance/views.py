@@ -428,6 +428,15 @@ def details(request, voyage_id):
     voyage = get_object_or_404(Voyage, id=voyage_id)
     context = {'voyage': voyage,'promos':promos,'cats':cats}
     return render(request, 'vacance/client/details.html', context)
+def detailsp(request, voyage_id):
+    promos=Promotion.objects.all()
+    categories=Voyage.categories
+    cats = [nom[:] for code, nom in categories]
+    voyage = get_object_or_404(Voyage, id=voyage_id)
+    prm = get_object_or_404(Promotion, id_Voyage=voyage)
+    voyage.prix=(voyage.prix)-((voyage.prix)*(prm.pourcentage/100))
+    context = {'voyage': voyage,'promos':promos,'cats':cats}
+    return render(request, 'vacance/client/details.html', context)
 
 def categories(request, categorie_t):
     cate=categorie_t[0]
@@ -493,7 +502,7 @@ def home(request):
 
     return render(request, 'vacance/client/home.html', context)
 
-########################user
+######################## user
 def detail(request, voyage_id):
     promos=Promotion.objects.all()
     categories=Voyage.categories
@@ -501,6 +510,18 @@ def detail(request, voyage_id):
     voyage = get_object_or_404(Voyage, id=voyage_id)
     context = {'voyage': voyage,'promos':promos,'cats':cats}
     return render(request, 'vacance/user/details.html', context)
+
+def detailp(request, voyage_id):
+    promos=Promotion.objects.all()
+    categories=Voyage.categories
+    cats = [nom[:] for code, nom in categories]
+    voyage = get_object_or_404(Voyage, id=voyage_id)
+    prm = get_object_or_404(Promotion, id_Voyage=voyage)
+    
+    voyage.prix=(voyage.prix)-((voyage.prix)*(prm.pourcentage/100))
+    context = {'voyage': voyage,'promos':promos,'cats':cats}
+    return render(request, 'vacance/user/details.html', context)
+
 #ajouter au favoris
 def favo(request,voy_id):
     

@@ -111,7 +111,7 @@
           <a href="javascript:void(0)" class="dropbtn">promotions</a>
           <div class="dropdown-content">
             {% for prom in promos %}
-            <a href="{% url 'detail' prom.id_Voyage.id %}">{{ prom.pourcentage }}% {{prom}}</a>
+            <a href="{% url 'detailp' prom.id_Voyage.id %}">{{ prom.pourcentage }}% {{prom}}</a>
             {% endfor %}
           </div>
         </li>
