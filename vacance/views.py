@@ -425,17 +425,29 @@ def home(request):
     voyage_trouve = None
     derniers_voyages = Voyage.objects.all().order_by('-id')[:]
 
-    if 'q1' in request.GET:
-        titre_recherche = request.GET['q1']
-        if titre_recherche:
-            voyages_trouves = Voyage.objects.filter(titre__icontains=titre_recherche)
-            if voyages_trouves.exists():
-                voyage_trouve = voyages_trouves[0]
-            else:
-                voyage_trouve = None
+    titre_recherche = request.GET.get('q1', '')
+    prix_recherche = request.GET.get('q2', '')
+
+    voyages_trouves = Voyage.objects.all()
+
+    if titre_recherche:
+        voyages_trouves = voyages_trouves.filter(titre__icontains=titre_recherche)
+
+    if prix_recherche:
+        try:
+            prix_recherche = float(prix_recherche)
+            voyages_trouves = voyages_trouves.filter(prix__lte=prix_recherche)
+        except ValueError:
+            # Gérer le cas où le prix_recherche n'est pas un nombre valide
+            pass
+
+    if voyages_trouves.exists():
+        voyage_trouve = voyages_trouves
+    else:
+        voyage_trouve = None
 
     context = {'voyages': derniers_voyages, 'voyage_trouve': voyage_trouve}
-    return render(request, 'vacance/client/home.html',context)
+    return render(request, 'vacance/client/home.html', context)
 
 def promotion(request):
 

@@ -34,7 +34,7 @@
           <input type="date" id="check-out" class="date-input" placeholder="Date d'arrivée">
         </div>
       </div>
-      <input type="number" class="room-input" placeholder="Rooms">
+      <input type="number" class="room-input" name="q2" placeholder="prix">
       <button type="submit" class="search-button">Recherche</button>
     </div>
     </form>
@@ -75,19 +75,20 @@
 {% endif %}
 
   {% if voyage_trouve %}
+  {% for voyage in voyage_trouve %}
   <div class="travel-section">
     <div class="destination-card">
-      <img src="{{ voyage_trouve.image_de_voyage.url }}" alt="image_de_voyage" >
+      <img src="{{ voyage.image_de_voyage.url }}" alt="image_de_voyage" >
       <div class="details">
-        <h3 class="titre">{{ voyage_trouve.titre }}</h3>
-        <h4 class="price">{{ voyage_trouve.prix }} Dh</h4>
-        <p class="category">{{ voyage_trouve.category }} </p>
-        <p class="date">{{ voyage_trouve.date_debut }}  {{ voyage_trouve.date_fin }} </p>
-        <p class="description">{{ voyage_trouve.description }} </p>
+        <h3 class="titre">{{ voyage.titre }}</h3>
+        <h4 class="price">{{ voyage.prix }} Dh</h4>
+        <p class="category">{{ voyage.category }} </p>
+        <p class="date">{{ voyage.date_debut }}  {{ voyage.date_fin }} </p>
+        <p class="description">{{ voyage.description }} </p>
         </div>
     </div>
       </div>
-
+{% endfor %}
 
 {% endif%}
       </div>
