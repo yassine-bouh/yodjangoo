@@ -4,7 +4,8 @@
 <head>
     <link rel="stylesheet" href="{% static 'css/dashu.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <title>Dashbord | Areej Almotairi</title>
+    <link rel="icon" type="images/gif" href="{% static 'images/avion.png' %}"> 
+    <title>YOT</title>
     <style>
         #search-form-promotion {
             display: flex;
@@ -70,11 +71,13 @@
         color:#FFF;
         background-color: red;
         border: red solid;
+        border-radius: 5px;
     }
     #B{
       color:#FFF;
       background-color: green;
       border: green solid;
+      border-radius: 5px;
     }
     #formulaireVoyage {
             display: none;
@@ -83,9 +86,11 @@
        color: Black;
     }
     #affFo{
-        color:#000;
-        background-color: aqua;
-        border: aqua solid;
+        color:#FFF;
+        /*background-color: aqua;
+        border: aqua solid;*/
+        background-color: #123;
+        border: #123 solid;
     }
     #sub{
         background-color: green;
@@ -127,12 +132,12 @@
 
 <div class="menu">
     <ul>
-        <li class="profile">
+        <li class="profile"> 
             <div class="img-box">
-                <!--img src="imges/user-200x300.webp"-->
-            </div>
-            <h2>YO TRAVEL</h2>
-        </li>
+              <img id='ico'  src="{% static 'images/avion.png' %}"></a>
+                    </div>
+            <h2> YO TRAVEL  </h2>
+           </li>
         <li>
             <a href="{% url 'admine' %}">
                 <i class="fas fa-home"></i>
@@ -176,6 +181,7 @@
     <h1>Table des Promotions</h1>
     <div id="promotions-container">
         <button onclick="afficherFormulairePromotion()" id="affFo">Ajouter Promotion</button>
+        <br><br>
         <div id="formulairePromotion" style="display: none;">
             <form method="post" action="{% url 'ajouter_promotion' %}">
                 {% csrf_token %}
@@ -198,10 +204,12 @@
                         <th><label for="pourcentagePromotion">Pourcentage :</label></th>
                         <td><input type="number" id="pourcentagePromotion" name="pourcentagePromotion" required></td>
                     </tr>
+                    <tr>
+                        <th colspan="2"><input type="submit" value="Ajouter" id="B">
+                        <button type="button" onclick="annulerFormulairePromotion()">Annuler</button> </th>
+                    </tr>
                 </table>
         
-                <input type="submit" value="Ajouter" id="subPromotion">
-                <button type="button" onclick="annulerFormulairePromotion()">Annuler</button>
             </form>
             <br><br>
         </div>
@@ -224,6 +232,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Titre</th>
+                    <th>Voyage</th>
                     <th>Pourcentage</th>
                     <th>Action</th>
                 </tr>
@@ -231,12 +240,14 @@
                     <tr>
                         <td>{{ promotion.id }}</td>
                         <td>{{ promotion.titre }}</td>
+                        <td>{{ promotion.id_Voyage }}</td>
                         <td>{{ promotion.pourcentage }}</td>
                         <td>
-                            <button id="B">Modifier</button>
+                            <button onclick="modifierProm('{{ promotion.id }}')" id="B">Modifier<i class="fas fa-edit"></i></button>
+                            <br><br>
                             <form method="post" action="{% url 'supprimer_promotion' promotion.id %}">
                                 {% csrf_token %}
-                                <button type="submit">Supprimer</button>
+                                <button type="submit">Supprimer<i class="fas fa-trash"></i></button>
                             </form>
                         </td>
                     </tr>
@@ -257,10 +268,11 @@
                     <td>{{ promotion_trouve.titre }}</td>
                     <td>{{ promotion_trouve.pourcentage }}</td>
                     <td>
-                        <button id="B">Modifier</button>
+                        <button onclick="modifierProm('{{ promotion_trouve.id }}')" id="B">Modifier<i class="fas fa-edit"></i></button>
+                        <br><br>
                         <form method="post" action="{% url 'supprimer_promotion' promotion_trouve.id %}">
                             {% csrf_token %}
-                            <button type="submit">Supprimer</button>
+                            <button type="submit">Supprimer<i class="fas fa-trash"></i></button>
                         </form>
                     </td>
                 </tr>
@@ -278,6 +290,10 @@
         var formulairePromotion = document.getElementById("formulairePromotion");
         formulairePromotion.style.display = "none";
         }
+        function modifierProm(promoId) {
+        // Rediriger vers la page ModifierVoyage avec l'ID du voyage
+        window.location.href = "/Modifierpromo/" + promoId + "/";
+    }
     </script>
     
     <!-- Add your content for promotions here -->

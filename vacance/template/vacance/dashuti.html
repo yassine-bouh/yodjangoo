@@ -4,7 +4,8 @@
     <head>
      <link rel="stylesheet" href="{% static 'css/dashu.css' %}">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-     <title> Dashbord | Areej Almotairi</title>
+     <link rel="icon" type="images/gif" href="{% static 'images/avion.png' %}"> 
+     <title>YOT</title>
      <style>
         #search-form {
             display: flex;
@@ -69,10 +70,12 @@
         color:#FFF;
         background-color: red;
         border: red solid;
+        border-radius: 5px;
     }
     #mod{
         background-color: gray;
         border: gray solid;
+        border-radius: 5px;
     }
     </style>
     </head>
@@ -80,12 +83,12 @@
       
     <div class="menu">
      <ul>
-       <li class="profile"> 
-        <div class="img-box">
-        <!--img src="imges/user-200x300.webp"-->
-        </div>
-        <h2>YO TRAVEL  </h2>
-       </li>
+        <li class="profile"> 
+            <div class="img-box">
+              <img id='ico'  src="{% static 'images/avion.png' %}"></a>
+                    </div>
+            <h2> YO TRAVEL  </h2>
+           </li>
        <li>
         <a href="{% url 'admine' %}" >
           <i class="fas fa-home"></i>
@@ -158,13 +161,13 @@
                         <td>
                             <form method="post" action="{% url 'supprimer_utilisateur' utilisateur.id %}">
                                 {% csrf_token %}
-                                <button type="submit">Supprimer</button>
+                                <button type="submit">Supprimer<i class="fas fa-trash"></i></button>
                             </form>
                             <br>
                             <form id="form-utilisateur-{{ utilisateur.id }}" class="form-utilisateur" method="post" action="{% url 'modifier_statut_utilisateur' utilisateur.id %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="nouveau_statut" value="admin">
-                                <button type="button" id="mod" onclick="confirmerModification('{{ utilisateur.id }}')">Modifier Statut</button>
+                                <button type="button" id="mod" onclick="confirmerModification('{{ utilisateur.id }}')">Modifier Statut<i class="fas fa-edit"></i></button>
                             </form>
                         </td>
                     </tr>
@@ -193,13 +196,13 @@
                     <td>
                         <form method="post" action="{% url 'supprimer_utilisateur' utilisateur_trouve.id %}">
                             {% csrf_token %}
-                            <button type="submit">Supprimer</button>
+                            <button type="submit">Supprimer<i class="fas fa-trash"></i></button>
                         </form>
                         <br>
                         <form id="form-utilisateur-{{ utilisateur_trouve.id }}" class="form-utilisateur" method="post" action="{% url 'modifier_statut_utilisateur' utilisateur_trouve.id %}">
                             {% csrf_token %}
                             <input type="hidden" name="nouveau_statut" value="admin">
-                            <button type="button" id="mod" onclick="confirmerModification('{{ utilisateur_trouve.id }}')">Modifier Statut</button>
+                            <button type="button" id="mod" onclick="confirmerModification('{{ utilisateur_trouve.id }}')">Modifier Statut<i class="fas fa-edit"></i></button>
                         </form>
                     </td>
                 </tr>

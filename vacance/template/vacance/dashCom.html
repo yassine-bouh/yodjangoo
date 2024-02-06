@@ -6,7 +6,8 @@
      <link rel="stylesheet" type="text/css" href="{% static 'css/com.css' %}">
      <script src="{% static 'js/com.js' %}"></script>
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-     <title> Dashbord | Areej Almotairi</title>
+     <link rel="icon" type="images/gif" href="{% static 'images/avion.png' %}"> 
+     <title>YOT</title>
      <style>
         #search-form {
             display: flex;
@@ -75,10 +76,12 @@
     #Mo{
         background-color: green;
         border: green solid;
+        border-radius: 5px;
     }
     #mod{
         background-color: gray;
         border: gray solid;
+        border-radius: 5px;
     }
     #list{
         color:black;
@@ -92,10 +95,10 @@
                 <ul>
                     <li class="profile"> 
                         <div class="img-box">
-                            <!-- Ajoutez ici votre image de profil -->
-                        </div>
-                        <h2>YO TRAVEL</h2>
-                    </li>
+                          <img id='ico'  src="{% static 'images/avion.png' %}"></a>
+                                </div>
+                        <h2> YO TRAVEL  </h2>
+                       </li>
                     <li>
                         <a href="{% url 'admine' %}">
                             <i class="fas fa-home"></i>
@@ -173,7 +176,7 @@
                                     <img src="{{ commande.recu.url }}" alt="Recu" id="a">
                                 </td>
                                 <td>
-                                    <button class="modifier-btn" id="Mo" data-commande-id="{{ commande.id }}">Modifier Statut</button>
+                                    <button class="modifier-btn" id="Mo" data-commande-id="{{ commande.id }}">Modifier Statut<i class="fas fa-edit"></i></button>
                                     <div class="modifier-form" id="modifier-form-{{ commande.id }}" style="display: none;">
                                  <form method="post" action="{% url 'modifier_statut_commande' commande.id %}">
                                  {% csrf_token %}
@@ -220,7 +223,7 @@
                                 <img src="{{ commande_trouvee.recu.url }}" alt="Recu" id="a">
                             </td>
                             <td>
-                                <button class="modifier-btn" id="Mo" data-commande-id="{{ commande_trouvee.id }}">Modifier Statut</button>
+                                <button class="modifier-btn" id="Mo" data-commande-id="{{ commande_trouvee.id }}">Modifier Statut<i class="fas fa-edit"></i></button>
                                 <div class="modifier-form" id="modifier-form-{{ commande_trouvee.id }}" style="display: none;">
                              <form method="post" action="{% url 'modifier_statut_commande' commande_trouvee.id %}">
                              {% csrf_token %}
