@@ -16,7 +16,7 @@ input[type=text], input[type=password] {
 }
 
 button {
-  background-color: #04AA6D;
+  background-color: #0056b3;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
@@ -47,6 +47,8 @@ img.avatar {
 
 .container {
   padding: 16px;
+  width:50%;
+  margin: auto;
 }
 
 span.psw {
@@ -68,7 +70,6 @@ span.psw {
 </head>
 <body>
 
-<h2>Login Form</h2>
 <!-- seCon.html -->
 <!-- seCon.html -->
 
@@ -80,6 +81,7 @@ span.psw {
   </div>
 
   <div class="container">
+    <h2>Se connecter</h2>
     <label for="id_email"><b>Email</b></label>
     <input type="text" placeholder="Enter Email" name="email" id="id_email" value="{{ email }}" required>
 
@@ -90,15 +92,15 @@ span.psw {
       <p style="color: red;">{{ error_message }}</p>
     {% endif %}
 
-    <button type="submit">Login</button>
+    <button type="submit" >Se connecter</button>
     <label>
-      <input type="checkbox" checked="checked" name="remember"> Remember me
+      <input type="checkbox" checked="checked" name="remember" >Se souvenir de moi
     </label>
   </div>
 
   <div class="container" style="background-color:#f1f1f1">
-    <button type="button" class="cancelbtn">Cancel</button>
-    <span class="psw">Forgot <a href="#">password?</a></span>
+    <button type="button" class="cancelbtn">Annuler</button>
+    <span class="psw"> <a href="#">Mot de passe oublié?</a></span>
   </div>
 
 </form>

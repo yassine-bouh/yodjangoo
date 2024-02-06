@@ -28,7 +28,7 @@ from django.views.decorators.http import require_POST
 # views.py
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Promotion, Voyage
-
+@user_passes_test(lambda u: u.statut != 'Client', login_url='/voyage/')
 def Modifierpromo(request, id):
     promotion = get_object_or_404(Promotion, id=id)
     voyages = Voyage.objects.all()
@@ -49,6 +49,7 @@ def Modifierpromo(request, id):
         return redirect('dashProm')  # Rediriger vers la page souhaitée après la modification de la promotion
 
     return render(request, 'vacance/ModifierPromo.html', {'promotion': promotion, 'voyages': voyages})
+@user_passes_test(lambda u: u.statut != 'Client', login_url='/voyage/')
 def ModifierVoyage(request, id):
     voyage = get_object_or_404(Voyage, id=id)
 
@@ -70,6 +71,7 @@ def ModifierVoyage(request, id):
         return redirect('dashVoy')
 
     return render(request, 'vacance/ModifierVoyage.html', {'voyage': voyage})
+@user_passes_test(lambda u: u.statut != 'Client', login_url='/voyage/')
 def modifier_statut_commande(request, commande_id):
     if request.method == 'POST':
         nouveau_statut = request.POST.get('nouveau_statut')
@@ -80,6 +82,7 @@ def modifier_statut_commande(request, commande_id):
     else:
         # Gérer le cas où la requête n'est pas de type POST
         return redirect('dashCom')  
+@user_passes_test(lambda u: u.statut != 'Client', login_url='/voyage/')
 def dashCom(request):
     commande_trouvee = None
     dernieres_commandes = Commande.objects.all().order_by('-date_de_commande')[:]
@@ -112,6 +115,7 @@ def modifier_statut_utilisateur(request, utilisateur_id):
             utilisateur.save()
             print("Statut modifié avec succès !")
     return redirect('dashuti')
+@user_passes_test(lambda u: u.statut != 'Client', login_url='/voyage/')
 def dashProm(request):
     promotion_trouve = None
     derniers_promotions = Promotion.objects.all().order_by('-id')[:]
@@ -212,6 +216,8 @@ def supprimer_voyage(request, voyage_id):
     voyage = get_object_or_404(Voyage, id=voyage_id)
     voyage.delete()
     return redirect('dashVoy')
+from django.contrib.auth.decorators import user_passes_test
+@user_passes_test(lambda u: u.statut != 'Client', login_url='/voyage/')
 def admine(request):
     # Votre logique de vue ici
     user_count = User.objects.count()
@@ -233,7 +239,7 @@ def admine(request):
                 'revenu':revenu,}
                 #'current_user_last_name': current_user_last_name,}
     return render(request, 'vacance/admine.html',context)
-
+@user_passes_test(lambda u: u.statut != 'Client', login_url='/voyage/')
 def dashuti(request):
     utilisateur_trouve = None
     derniers_utilisateurs = User.objects.filter(statut='Client').order_by('-date_joined')[:]
@@ -252,7 +258,7 @@ def dashuti(request):
 
     context = {'utilisateurs': derniers_utilisateurs, 'utilisateur_trouve': utilisateur_trouve}
     return render(request, 'vacance/dashuti.html', context)
-
+@user_passes_test(lambda u: u.statut != 'Client', login_url='/voyage/')
 def dashVoy(request):
     voyage_trouve = None
     derniers_voyages = Voyage.objects.all().order_by('-id')[:]
@@ -273,9 +279,6 @@ def Sec(request):
     # Votre logique de vue ici
     return render(request, 'vacance/seCon.html')
 
-def acceuil(request):
-    # Votre logique de vue ici
-    return render(request, 'vacance/acceuil.html')
 
 def GenrerListe():
     days = range(1, 32)
