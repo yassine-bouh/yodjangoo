@@ -126,22 +126,32 @@
          </div>
        </div>
     <!-- Destinations -->
-    <H3 id="tit">favoris </H3>
-     {% for voyage in voyages%}   
-       <div class="main-container">
+    <H3 id="tit">mes reservations </H3>
+    {% for voyage in commands %}
+    <div class="main-container">
 
            <div class="travel-section">
                <div class="destination-card"><a href="{% url 'detail' voyage.id%}">
-                   <img src="{{ voyage.image_de_voyage.url }}" name='image' title="image_de_voyage"  alt="image_de_voyage"></a>
+                   <img src="{{ voyage.id_Voyage.image_de_voyage.url }}" name='image' title="image_de_voyage"  alt="image_de_voyage"></a>
+                   {% if voyage.statut == "R" %}
                    <div id="icones">
-                     <a href="{% url 'detail' voyage.id%}">
-                     <img id='ach'  src="{% static 'images/acheter.png' %}" title="reserver" alt="reserver"></a>
-                 </div>
+                       <img id='ach'  src="{% static 'images/cancel.png' %}" title="reserver" alt="reserver">
+                   </div>
+               {% elif voyage.statut == "W" %}
+                   <div id="icones">
+                       <img id='ach'  src="{% static 'images/attente.png' %}" title="reserver" alt="reserver">
+                   </div>
+               {% elif voyage.statut == "A" %}
+                   <div id="icones">
+                       <img id='ach'  src="{% static 'images/approved.png' %}" title="reserver" alt="reserver">
+                   </div>
+               {% endif %}
                  <div class="details">
-                   <h3 class="titre">{{ voyage.titre }}</h3>
-                   <h4 class="price">{{ voyage.get_categorie_display }}</h4>
-                   <p class="date">{{ voyage.date_debut }}  {{ voyage.date_fin }} </p>
-                   <p class="description">{{ voyage.description }} </p>
+                   <h3 class="titre">{{ voyage.id_Voyage.titre }}</h3>
+                   <h4 class="price">{{ voyage.id_Voyage.get_categorie_display }}</h4>
+                   <p class="date">{{ voyage.id_Voyage.date_debut }}  {{ voyage.id_Voyage.date_fin }} </p>
+                   status de commande : {{ voyage.get_statut_display }}
+                   <p class="description">{{ voyage.id_Voyage.description }} </p>
                </div>
                </div>
            

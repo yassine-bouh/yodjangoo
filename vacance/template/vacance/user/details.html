@@ -150,10 +150,10 @@ button:hover {
      <div class="Nav">
       <ul>
         <li class="dropdown">
-            <a href="#" class="dropbtn">reservations</a>
-          </li>        <li class="dropdown">
-            <a href="{% url 'favoris' %}" class="dropbtn">favoris</a>
-          </li>
+          <a href="{% url 'reservations' %}" class="dropbtn">reservations</a>
+        </li>        <li class="dropdown">
+          <a href="{% url 'favoris' %}" class="dropbtn">favoris</a>
+        </li>
         <li class="dropdown">
           <a href="javascript:void(0)" class="dropbtn">promotions</a>
           <div class="dropdown-content">
@@ -226,8 +226,8 @@ button:hover {
                   <input type="email" id="email" readonly value="{{ user.username }}" name="email" required>
               </div>
               <div class="form-group">
-                <label for="email">Voyage :</label>
-                <input type="email" id="email" readonly value="{{ voyage.id }}" name="idv" required>
+                <label for="email">Voyage : {{ voyage.titre }}</label>
+                <input type="email" id="email" readonly style="display: none;" value="{{ voyage.id }}" name="idv" required>
               </div> 
                 <div class="form-group">
                     <label for="imag">Ajouter votre recu :</label>

@@ -35,6 +35,8 @@ urlpatterns = [
     path('favo/<int:voy_id>/', views.favo, name='favo'),
     path('favoris/', views.favoris, name='favoris'),
     path('reserver/', views.reserver, name='reserver'),
+    path('profile/', views.profile, name='profile'),
+    path('modifier_profile/', views.modifier_profile, name='modifier_profile'),
 
 
 ]
