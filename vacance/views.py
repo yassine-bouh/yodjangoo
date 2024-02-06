@@ -279,9 +279,6 @@ def Sec(request):
     # Votre logique de vue ici
     return render(request, 'vacance/seCon.html')
 
-def acceuil(request):
-    # Votre logique de vue ici
-    return render(request, 'vacance/acceuil.html')
 
 def GenrerListe():
     days = range(1, 32)
