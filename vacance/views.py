@@ -384,6 +384,7 @@ def inscription(request):
             #return HttpResponseRedirect(reverse('voyage'))
             user = authenticate(request, username=email, password=mot_de_passe)
             if user is not None:
+                login(request, user)
                 return HttpResponseRedirect(reverse('voyage'),user)
 
         except IntegrityError as e:
