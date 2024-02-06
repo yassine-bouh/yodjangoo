@@ -431,6 +431,15 @@ def details(request, voyage_id):
     voyage = get_object_or_404(Voyage, id=voyage_id)
     context = {'voyage': voyage,'promos':promos,'cats':cats}
     return render(request, 'vacance/client/details.html', context)
+def detailsp(request, voyage_id):
+    promos=Promotion.objects.all()
+    categories=Voyage.categories
+    cats = [nom[:] for code, nom in categories]
+    voyage = get_object_or_404(Voyage, id=voyage_id)
+    prm = get_object_or_404(Promotion, id_Voyage=voyage)
+    voyage.prix=(voyage.prix)-((voyage.prix)*(prm.pourcentage/100))
+    context = {'voyage': voyage,'promos':promos,'cats':cats}
+    return render(request, 'vacance/client/details.html', context)
 
 def categories(request, categorie_t):
     cate=categorie_t[0]
@@ -496,7 +505,7 @@ def home(request):
 
     return render(request, 'vacance/client/home.html', context)
 
-########################user
+######################## user
 def detail(request, voyage_id):
     promos=Promotion.objects.all()
     categories=Voyage.categories
@@ -504,6 +513,18 @@ def detail(request, voyage_id):
     voyage = get_object_or_404(Voyage, id=voyage_id)
     context = {'voyage': voyage,'promos':promos,'cats':cats}
     return render(request, 'vacance/user/details.html', context)
+
+def detailp(request, voyage_id):
+    promos=Promotion.objects.all()
+    categories=Voyage.categories
+    cats = [nom[:] for code, nom in categories]
+    voyage = get_object_or_404(Voyage, id=voyage_id)
+    prm = get_object_or_404(Promotion, id_Voyage=voyage)
+    
+    voyage.prix=(voyage.prix)-((voyage.prix)*(prm.pourcentage/100))
+    context = {'voyage': voyage,'promos':promos,'cats':cats}
+    return render(request, 'vacance/user/details.html', context)
+
 #ajouter au favoris
 def favo(request,voy_id):
     
@@ -601,18 +622,20 @@ def voyage(request):
     }
 
     return render(request, 'vacance/user/voyage.html', context)
-
+#page des commande
 def reservations(request):
     promos = Promotion.objects.all()
     categories = Voyage.categories
-    favoriss = Favoris.objects.filter(id_User=request.user.id)
+
+    commands = Commande.objects.filter(id_User=request.user.id).order_by('-id')[:]
     voyages=[]
-    for f in favoriss:
+    for f in commands:
         voyage = get_object_or_404(Voyage, id=f.id_Voyage.id)
         voyages.append(voyage)
-        print('tettt')
+
+
     cats = [nom[1] for  nom in categories]
-    context = {'voyages': voyages, 'promos': promos, 'cats': cats}
+    context = {'voyages': voyages, 'promos': promos, 'cats': cats ,'commands':commands}
     return render(request, 'vacance/user/reservations.html', context)
     ###reserver
 from datetime import date
@@ -642,9 +665,36 @@ def reserver(request):
                     
             promos=Promotion.objects.all()
             categories=Voyage.categories
-            cats = [nom[:] for code, nom in categories]
-            voyage = get_object_or_404(Voyage, id=voy.id)
-            context = {'voyage': voyage,'promos':promos,'cats':cats}
-            return render(request, 'vacance/user/details.html', context)
+            commands = Commande.objects.filter(id_User=request.user.id).order_by('-id')[:]
+            voyages=[]
+            for f in commands:
+                voyage = get_object_or_404(Voyage, id=f.id_Voyage.id)
+                voyages.append(voyage)
+
+
+            cats = [nom[1] for  nom in categories]
+            context = {'voyages': voyages, 'promos': promos, 'cats': cats ,'commands':commands}
+            return render(request, 'vacance/user/reservations.html', context)
         else:
             return redirect('Sec')
+#####profile user
+def profile(request):
+    user = request.user
+    return render(request, 'vacance/user/profile.html', {'user': user})
+def modifier_profile(request):
+    user = request.user
+
+    if request.method == 'POST':
+        user.numero_de_telephone = request.POST.get('numero_de_telephone', user.numero_de_telephone)
+        user.first_name = request.POST.get('first_name', user.first_name)
+        user.last_name = request.POST.get('last_name', user.last_name)
+        user.date_Nai = request.POST.get('date_Nai', user.date_Nai)
+
+        # Handle profile image upload
+        if 'image_de_profil' in request.FILES:
+            user.image_de_profil = request.FILES['image_de_profil']
+
+        user.save()
+        return redirect('profile')  # Change 'dashboard' to your actual dashboard URL name
+
+    return render(request, 'vacance/user/profile.html', {'user': user})

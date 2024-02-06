@@ -75,8 +75,8 @@
         <img id='ico'  src="{% static 'images/avion.png' %}"></a>
         YOTravel.com
     </div>
-        <h4 id="nom">{{ user.first_name }}</h4>
-        <img id="imgprof" src="{{ user.image_de_profil.url }}" alt="{{ user.first_name }}">
+        <h4 id="nom">{{ user.first_name }}</h4><a href="{% url 'profile' %}">
+        <img id="imgprof" src="{{ user.image_de_profil.url }}" alt="{{ user.first_name }}"></a>
 
     </div>
     <!--hearch bar-->
@@ -111,7 +111,7 @@
           <a href="javascript:void(0)" class="dropbtn">promotions</a>
           <div class="dropdown-content">
             {% for prom in promos %}
-            <a href="{% url 'detail' prom.id_Voyage.id %}">{{ prom.pourcentage }}% {{prom}}</a>
+            <a href="{% url 'detailp' prom.id_Voyage.id %}">{{ prom.pourcentage }}% {{prom}}</a>
             {% endfor %}
           </div>
         </li>

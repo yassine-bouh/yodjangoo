@@ -140,8 +140,8 @@ button:hover {
       <img id='ico'  src="{% static 'images/avion.png' %}"></a>
       YOTravel.com
   </div>
-      <h4 id="nom">{{ user.first_name }}</h4>
-      <img id="imgprof" src="{{ user.image_de_profil.url }}" alt="{{ user.first_name }}">
+      <h4 id="nom">{{ user.first_name }}</h4><a href="{% url 'profile' %}">
+      <img id="imgprof" src="{{ user.image_de_profil.url }}" alt="{{ user.first_name }}"></a>
 
   </div>
 
@@ -150,15 +150,15 @@ button:hover {
      <div class="Nav">
       <ul>
         <li class="dropdown">
-            <a href="#" class="dropbtn">reservations</a>
-          </li>        <li class="dropdown">
-            <a href="{% url 'favoris' %}" class="dropbtn">favoris</a>
-          </li>
+          <a href="{% url 'reservations' %}" class="dropbtn">reservations</a>
+        </li>        <li class="dropdown">
+          <a href="{% url 'favoris' %}" class="dropbtn">favoris</a>
+        </li>
         <li class="dropdown">
           <a href="javascript:void(0)" class="dropbtn">promotions</a>
           <div class="dropdown-content">
             {% for prom in promos %}
-            <a href="{% url 'detail' prom.id_Voyage.id %}">{{ prom.pourcentage }}% {{prom}}</a>
+            <a href="{% url 'detailp' prom.id_Voyage.id %}">{{ prom.pourcentage }}% {{prom}}</a>
             {% endfor %}
           </div>
         </li>
@@ -197,7 +197,7 @@ button:hover {
               <div class="details">
                   
                 <h3 class="titre">{{ voyage.titre }}</h3>
-                <h4 class="price">{{ voyage.get_categorie_display }}</h4>
+                <h4 class="price">{{ voyage.prix }}</h4>
                 <p class="date">{{ voyage.date_debut }}  {{ voyage.date_fin }} </p>
                 <p class="description">{{ voyage.description }} </p>
             </div>
@@ -226,8 +226,8 @@ button:hover {
                   <input type="email" id="email" readonly value="{{ user.username }}" name="email" required>
               </div>
               <div class="form-group">
-                <label for="email">Voyage :</label>
-                <input type="email" id="email" readonly value="{{ voyage.id }}" name="idv" required>
+                <label for="email">Voyage : {{ voyage.titre }}</label>
+                <input type="email" id="email" readonly style="display: none;" value="{{ voyage.id }}" name="idv" required>
               </div> 
                 <div class="form-group">
                     <label for="imag">Ajouter votre recu :</label>
