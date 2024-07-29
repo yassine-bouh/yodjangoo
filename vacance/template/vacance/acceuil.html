@@ -9,7 +9,6 @@
     <title>Navbar Example</title>
 </head>
 <body>
-
   {% block content %}
     <form action="{% url 'inscription' %}" method="post" style="border:1px solid #ccc" enctype="multipart/form-data">
       {% csrf_token %}
